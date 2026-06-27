@@ -26,7 +26,7 @@ app.use(helmet({
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL || 'http://localhost:5173'],
+    origin: [process.env.CLIENT_URL || 'https://honeybee-frontend-0umr.onrender.com'],
     credentials: true,
   })
 );
@@ -51,14 +51,14 @@ app.use('/uploads', (req, res, next) => {
   etag: false
 }));
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 120,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { success: false, message: 'Too many requests, please try again later.' },
-});
-app.use(limiter);
+app.set("trust proxy", 1);
+
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+  })
+);
 
 
 
