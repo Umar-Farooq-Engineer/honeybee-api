@@ -26,16 +26,12 @@ app.use(helmet({
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL || 'https://honeybee-frontend-0umr.onrender.com'],
+    origin:'https://honeybee-frontend-0umr.onrender.com',
     credentials: true,
   })
 );
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-  next();
-});
+
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -68,17 +64,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
-
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'API is healthy' });
 });
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../clients/my-first-website/dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../clients/my-first-website/dist', 'index.html'));
-  });
-}
 
 app.use(errorHandler);
 
