@@ -38,14 +38,14 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(hpp());
 
 // Serve uploads folder as static files BEFORE rate limiter
-// app.use('/uploads', (req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-//   next();
-// }, express.static(path.join(__dirname, 'uploads'), {
-//   maxAge: '1d',
-//   etag: false
-// }));
+app.use('/uploads', (req, res, next) => {
+
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+}, express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '1d',
+  etag: false
+}));
 
 app.set("trust proxy", 1);
 
